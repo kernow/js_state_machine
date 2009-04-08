@@ -1,17 +1,9 @@
+var SM = {};
 
-function StateMachine(name, options) {
+SM.StateMachine = function (name, object, options) {
   
   // options: initial - the initial state
   //          action  - a callback to run on every transition
-  //          
-  
-	return new Machine(name, options);
-} 
 
-StateMachine.prototype = {
-	reservedNames: ['expects', 'jsmocha'],
-	
-	already_mocked: function(object) {
-		return object.jsmocha ? true : false;
-	}
+	return new SM.Machine(name, object, options);
 }
