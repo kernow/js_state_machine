@@ -11,5 +11,6 @@ YUI({base: 'js/yui/build/'}).use("console", "yuitest", function(Y) {
   Y.Test.Runner.add(jsStateMachineTests.StateMachineTests(Y));
 	Y.Test.Runner.add(jsStateMachineTests.TransitionTests(Y));
 	Y.Test.Runner.add(jsStateMachineTests.EventTests(Y));
+	Y.Test.Runner.add(jsStateMachineTests.CallbackTests(Y))
 	Y.Test.Runner.run();
 });
