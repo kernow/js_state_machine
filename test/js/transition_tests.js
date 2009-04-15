@@ -15,13 +15,13 @@ jsStateMachineTests.TransitionTests = function(Y) {
 		},
 		
 		testCanAddTransition : function () {
-		  new SM.StateMachine('state', this.car, { initial: 'idle' });
+		  new SM.StateMachine('state', this.car, { initial: 'parked' });
       Y.Assert.isObject( this.car.event('start')
-                            .transition({ from:'idle', to:'running' })
+                            .transition({ from:'parked', to:'idling' })
       );
       Y.Assert.isObject( this.car.event('start')
-                            .transition({ from:'idle', to:'running' })
-                            .transition({ from:'running', to:'idle' })
+                            .transition({ from:'parked', to:'idling' })
+                            .transition({ from:'idling', to:'parked' })
       );
 		}
 	}));
