@@ -13,17 +13,41 @@ jsStateMachineTests.TransitionTests = function(Y) {
 		tearDown : function () {
 		  delete this.car;
 		},
-		
-    // testCanAddTransition : function () {
-    //   new SM.StateMachine('state', this.car, { initial: 'parked' });
-    //       Y.Assert.isObject( this.car.event('start')
-    //                             .transition({ from:'parked', to:'idling' })
-    //       );
-    //       Y.Assert.isObject( this.car.event('start')
-    //                             .transition({ from:'parked', to:'idling' })
-    //                             .transition({ from:'idling', to:'parked' })
-    //       );
-    // }
+		testCanSetConditionalTransitions : function () {
+		  new Mock(this.car);
+      this.car.expects('battery_flat').twice().returns(true, false);
+      this.car.expects('car_in_working_order').twice().returns(false, true);
+      
+      new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
+        machine.event('start', {}, function(event){
+          event.transition({ from: 'parked', to: 'idling', unless: 'battery_flat' });
+        });
+        machine.event('gear_up', {}, function(event){
+          event.transition({ from: 'idling', to: 'first_gear', if: 'car_in_working_order' });
+        });
+      });
+      Y.Assert.isFalse(this.car.start());
+      Y.Assert.isTrue(this.car.start());
+      Y.Assert.areEqual('idling', this.car.state);
+      Y.Assert.isFalse(this.car.gear_up());
+      Y.Assert.isTrue(this.car.gear_up());
+      Y.Assert.areEqual('first_gear', this.car.state);
+    },
+    testCanSetComplexConditionalTransitions : function () {
+		  new Mock(this.car);
+      this.car.expects('battery_flat').twice().returns(true, false, false);
+      this.car.expects('car_in_working_order').twice().returns(true, false, true);
+      
+      new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
+        machine.event('start', {}, function(event){
+          event.transition({ from: 'parked', to: 'idling', unless: 'battery_flat', if: 'car_in_working_order' });
+        });
+      });
+      Y.Assert.isFalse(this.car.start());
+      Y.Assert.isFalse(this.car.start());
+      Y.Assert.isTrue(this.car.start());
+      Y.Assert.areEqual('idling', this.car.state);
+    }
 	}));
 
 	return testSuite;
