@@ -4,7 +4,6 @@ jsStateMachineTests.StateMachineTests = function(Y) {
 
   // helper methods
   var contains = function (array, match){
-	  console.log(array);
 	  for(var i=0; i < array.length; i++){
 	    if(array[i].name == match){
 	      return true;
