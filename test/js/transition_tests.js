@@ -23,7 +23,7 @@ jsStateMachineTests.TransitionTests = function(Y) {
           event.transition({ from: 'parked', to: 'idling', unless: 'battery_flat' });
         });
         machine.event('gear_up', {}, function(event){
-          event.transition({ from: 'idling', to: 'first_gear', if: 'car_in_working_order' });
+          event.transition({ from: 'idling', to: 'first_gear', when: 'car_in_working_order' });
         });
       });
       Y.Assert.isFalse(this.car.start());
@@ -40,7 +40,7 @@ jsStateMachineTests.TransitionTests = function(Y) {
       
       new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
         machine.event('start', {}, function(event){
-          event.transition({ from: 'parked', to: 'idling', unless: 'battery_flat', if: 'car_in_working_order' });
+          event.transition({ from: 'parked', to: 'idling', unless: 'battery_flat', when: 'car_in_working_order' });
         });
       });
       Y.Assert.isFalse(this.car.start());
