@@ -15,8 +15,8 @@ jsStateMachineTests.TransitionTests = function(Y) {
 		},
 		testCanSetConditionalTransitions : function () {
 		  new Mock(this.car);
-      this.car.expects('battery_flat').twice().returns(true, false);
-      this.car.expects('car_in_working_order').twice().returns(false, true);
+      this.car.expects('battery_flat').times(3).returns(true, false);
+      this.car.expects('car_in_working_order').times(3).returns(false, true);
       
       new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
         machine.event('start', {}, function(event){
@@ -32,11 +32,12 @@ jsStateMachineTests.TransitionTests = function(Y) {
       Y.Assert.isFalse(this.car.gear_up());
       Y.Assert.isTrue(this.car.gear_up());
       Y.Assert.areEqual('first_gear', this.car.state);
+      Y.Assert.isTrue(this.car.jsmocha.verify(), this.car.jsmocha.report());
     },
     testCanSetComplexConditionalTransitions : function () {
 		  new Mock(this.car);
-      this.car.expects('battery_flat').twice().returns(true, false, false);
-      this.car.expects('car_in_working_order').twice().returns(true, false, true);
+      this.car.expects('battery_flat').times(3).returns(true, false, false);
+      this.car.expects('car_in_working_order').times(4).returns(true, false, true);
       
       new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
         machine.event('start', {}, function(event){
@@ -47,6 +48,42 @@ jsStateMachineTests.TransitionTests = function(Y) {
       Y.Assert.isFalse(this.car.start());
       Y.Assert.isTrue(this.car.start());
       Y.Assert.areEqual('idling', this.car.state);
+      Y.Assert.isTrue(this.car.jsmocha.verify(), this.car.jsmocha.report());
+    },
+    testCanTransitionFromAndToTheSameState : function () {
+      new Mock(this.car);
+      this.car.expects('open_close_door').twice();
+      new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
+        
+        machine.before_transition({ on: 'get_out', run: 'open_close_door' });
+        machine.before_transition({ on: 'get_in', run: 'open_close_door' });
+        
+        machine.event('get_out', {}, function(event){
+          event.transition({ from: 'parked', to: 'parked' });
+        });
+        machine.event('get_in', {}, function(event){
+          event.transition({ from: 'parked', to: 'parked'});
+        });
+        machine.event('start', {}, function(event){
+          event.transition({ from: 'parked', to: 'idling' });
+        });
+        machine.event('stop', {}, function(event){
+          event.transition({ from: 'idling', to: 'parked' });
+        });
+      });
+      Y.Assert.isFalse(this.car.stop());
+      Y.Assert.areEqual('parked', this.car.state);
+      Y.Assert.isTrue(this.car.get_in());
+      Y.Assert.areEqual('parked', this.car.state);
+      Y.Assert.isTrue(this.car.start());
+      Y.Assert.areEqual('idling', this.car.state);
+      Y.Assert.isFalse(this.car.get_out());
+      Y.Assert.areEqual('idling', this.car.state);
+      Y.Assert.isTrue(this.car.stop());
+      Y.Assert.areEqual('parked', this.car.state);
+      Y.Assert.isTrue(this.car.get_out());
+      Y.Assert.areEqual('parked', this.car.state);
+      Y.Assert.isTrue(this.car.jsmocha.verify(), this.car.jsmocha.report());
     }
 	}));
 

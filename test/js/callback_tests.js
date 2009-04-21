@@ -14,13 +14,13 @@ jsStateMachineTests.CallbackTests = function(Y) {
 		  delete this.car;
 		},
 		
-    testCanRegisterBeforeTransition : function () {
+    testCanRegisterBeforeTransitionWithTo : function () {
       new Mock(this.car);
       this.car.expects('turn_on_radio');
       
       new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
         
-        machine.before_transition({to: 'idling', run: 'turn_on_radio'});
+        machine.before_transition({ to: 'idling', run: 'turn_on_radio' });
         
         machine.event('start', {}, function(event){
           event.transition({ from: 'parked', to: 'idling' });
@@ -29,19 +29,100 @@ jsStateMachineTests.CallbackTests = function(Y) {
       this.car.start();
       Y.Assert.isTrue(this.car.jsmocha.verify(), this.car.jsmocha.report());
     },
-    testCanRegisterAfterTransition : function () {
+    testCanRegisterBeforeTransitionWithFrom : function () {
+      new Mock(this.car);
+      this.car.expects('check_mirror');
+      
+      new SM.StateMachine('state', this.car, { initial: 'idling' }, function(machine){
+        
+        machine.before_transition({ from: 'idling', run: 'check_mirror' });
+        
+        machine.event('gear_up', {}, function(event){
+          event.transition({ from: 'idling', to: 'first_gear' });
+        });
+      });
+      this.car.gear_up();
+      Y.Assert.isTrue(this.car.jsmocha.verify(), this.car.jsmocha.report());
+    },
+    testCanRegisterBeforeTransitionWithOn : function () {
+      new Mock(this.car);
+      this.car.expects('check_mirror');
+      
+      new SM.StateMachine('state', this.car, { initial: 'idling' }, function(machine){
+        
+        machine.before_transition({ on: 'gear_up', run: 'check_mirror' });
+        
+        machine.event('gear_up', {}, function(event){
+          event.transition({ from: 'idling', to: 'first_gear' });
+        });
+      });
+      this.car.gear_up();
+      Y.Assert.isTrue(this.car.jsmocha.verify(), this.car.jsmocha.report());
+    },
+    testCanRegisterAfterTransitionWithTo : function () {
       new Mock(this.car);
       this.car.expects('open_sunroof');
       
       new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
         
-        machine.after_transition({to: 'idling', run: 'open_sunroof'});
+        machine.after_transition({ to: 'idling', run: 'open_sunroof' });
         
         machine.event('start', {}, function(event){
           event.transition({ from: 'parked', to: 'idling' });
         });
       });
       this.car.start();
+      Y.Assert.isTrue(this.car.jsmocha.verify(), this.car.jsmocha.report());
+    },
+    testCanRegisterAfterTransitionWithFrom : function () {
+      new Mock(this.car);
+      this.car.expects('light_cigarette');
+      
+      new SM.StateMachine('state', this.car, { initial: 'idling' }, function(machine){
+        
+        machine.before_transition({ from: 'idling', run: 'light_cigarette' });
+        
+        machine.event('gear_up', {}, function(event){
+          event.transition({ from: 'idling', to: 'first_gear' });
+        });
+      });
+      this.car.gear_up();
+      Y.Assert.isTrue(this.car.jsmocha.verify(), this.car.jsmocha.report());
+    },
+    testCanRegisterAfterTransitionWithOn : function () {
+      new Mock(this.car);
+      this.car.expects('light_cigarette');
+      
+      new SM.StateMachine('state', this.car, { initial: 'idling' }, function(machine){
+        
+        machine.before_transition({ on: 'gear_up', run: 'light_cigarette' });
+        
+        machine.event('gear_up', {}, function(event){
+          event.transition({ from: 'idling', to: 'first_gear' });
+        });
+      });
+      this.car.gear_up();
+      Y.Assert.isTrue(this.car.jsmocha.verify(), this.car.jsmocha.report());
+    },
+    testCanRegisterAfterTransitionWithFromAndTo : function () {
+      new Mock(this.car);
+      this.car.expects('check_mirror');
+      this.car.expects('light_cigarette').never();
+      
+      new SM.StateMachine('state', this.car, { initial: 'idling' }, function(machine){
+        
+        machine.before_transition({ from: 'idling', to: 'first_gear', run: 'check_mirror' });
+        machine.before_transition({ from: 'first_gear', to: 'second_gear', run: 'light_cigarette' });
+        
+        machine.event('gear_up', {}, function(event){
+          event.transition({ from: 'idling', to: 'first_gear' });
+        });
+        machine.event('gear_up_2', {}, function(event){
+          event.transition({ from: 'first_gear', to: 'third_gear' });
+        });
+      });
+      this.car.gear_up();
+      this.car.gear_up_2();
       Y.Assert.isTrue(this.car.jsmocha.verify(), this.car.jsmocha.report());
     },
     testCanRegisterBeforeAndAfterTransition : function () {
