@@ -20,7 +20,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
       
       new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
         
-        machine.before_transition({ to: 'idling', run: 'turn_on_radio' });
+        machine.before_transition({ to: 'idling', run: machine.object.turn_on_radio });
         
         machine.event('start', {}, function(event){
           event.transition({ from: 'parked', to: 'idling' });
@@ -35,7 +35,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
       
       new SM.StateMachine('state', this.car, { initial: 'idling' }, function(machine){
         
-        machine.before_transition({ from: 'idling', run: 'check_mirror' });
+        machine.before_transition({ from: 'idling', run: machine.object.check_mirror });
         
         machine.event('gear_up', {}, function(event){
           event.transition({ from: 'idling', to: 'first_gear' });
@@ -50,7 +50,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
       
       new SM.StateMachine('state', this.car, { initial: 'idling' }, function(machine){
         
-        machine.before_transition({ on: 'gear_up', run: 'check_mirror' });
+        machine.before_transition({ on: 'gear_up', run: machine.object.check_mirror });
         
         machine.event('gear_up', {}, function(event){
           event.transition({ from: 'idling', to: 'first_gear' });
@@ -65,7 +65,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
       
       new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
         
-        machine.after_transition({ to: 'idling', run: 'open_sunroof' });
+        machine.after_transition({ to: 'idling', run: machine.object.open_sunroof });
         
         machine.event('start', {}, function(event){
           event.transition({ from: 'parked', to: 'idling' });
@@ -80,7 +80,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
       
       new SM.StateMachine('state', this.car, { initial: 'idling' }, function(machine){
         
-        machine.before_transition({ from: 'idling', run: 'light_cigarette' });
+        machine.before_transition({ from: 'idling', run: machine.object.light_cigarette });
         
         machine.event('gear_up', {}, function(event){
           event.transition({ from: 'idling', to: 'first_gear' });
@@ -95,7 +95,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
       
       new SM.StateMachine('state', this.car, { initial: 'idling' }, function(machine){
         
-        machine.before_transition({ on: 'gear_up', run: 'light_cigarette' });
+        machine.before_transition({ on: 'gear_up', run: machine.object.light_cigarette });
         
         machine.event('gear_up', {}, function(event){
           event.transition({ from: 'idling', to: 'first_gear' });
@@ -111,8 +111,8 @@ jsStateMachineTests.CallbackTests = function(Y) {
       
       new SM.StateMachine('state', this.car, { initial: 'idling' }, function(machine){
         
-        machine.before_transition({ from: 'idling', to: 'first_gear', run: 'check_mirror' });
-        machine.before_transition({ from: 'first_gear', to: 'second_gear', run: 'light_cigarette' });
+        machine.before_transition({ from: 'idling', to: 'first_gear', run: machine.object.check_mirror });
+        machine.before_transition({ from: 'first_gear', to: 'second_gear', run: machine.object.light_cigarette });
         
         machine.event('gear_up', {}, function(event){
           event.transition({ from: 'idling', to: 'first_gear' });
@@ -132,8 +132,8 @@ jsStateMachineTests.CallbackTests = function(Y) {
       
       new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
         
-        machine.before_transition({to: 'idling', run: 'turn_on_radio'});
-        machine.after_transition({to: 'idling', run: 'open_sunroof'});
+        machine.before_transition({to: 'idling', run: machine.object.turn_on_radio });
+        machine.after_transition({to: 'idling', run: machine.object.open_sunroof });
         
         machine.event('start', {}, function(event){
           event.transition({ from: 'parked', to: 'idling' });
@@ -151,11 +151,11 @@ jsStateMachineTests.CallbackTests = function(Y) {
       
       new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
         
-        machine.before_transition({to: 'idling', run: 'turn_on_radio'});
-        machine.before_transition({to: 'parked', run: 'turn_off_radio'});
+        machine.before_transition({to: 'idling', run: machine.object.turn_on_radio });
+        machine.before_transition({to: 'parked', run: machine.object.turn_off_radio });
         
-        machine.after_transition({to: 'idling', run: 'open_sunroof'});
-        machine.after_transition({to: 'parked', run: 'close_sunroof'});
+        machine.after_transition({to: 'idling', run: machine.object.open_sunroof });
+        machine.after_transition({to: 'parked', run: machine.object.close_sunroof });
         
         machine.event('start', {}, function(event){
           event.transition({ from: 'parked', to: 'idling' });
@@ -176,11 +176,11 @@ jsStateMachineTests.CallbackTests = function(Y) {
       
       new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
         
-        machine.before_transition({to: 'idling', run: 'turn_on_radio'});
-        machine.before_transition({to: 'parked', run: 'turn_off_radio'});
+        machine.before_transition({to: 'idling', run: machine.object.turn_on_radio });
+        machine.before_transition({to: 'parked', run: machine.object.turn_off_radio });
         
-        machine.after_transition({to: 'idling', run: 'open_sunroof'});
-        machine.after_transition({to: 'parked', run: 'close_sunroof'});
+        machine.after_transition({to: 'idling', run: machine.object.open_sunroof });
+        machine.after_transition({to: 'parked', run: machine.object.close_sunroof });
         
         machine.event('start', {}, function(event){
           event.transition({ from: 'parked', to: 'idling' });
@@ -206,7 +206,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
         machine.before_transition({to: 'idling'}, function(){
           callback_checker.turn_on_radio();
         });
-        machine.before_transition({to: 'parked', run: 'close_sunroof'}, function(){
+        machine.before_transition({to: 'parked', run: machine.object.close_sunroof }, function(){
           callback_checker.turn_off_radio();
         });
         
@@ -244,7 +244,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
       
       new SM.StateMachine('radio_state', this.car, { initial: 'off' }, function(machine){
         
-        machine.after_transition({ to: 'on', run: 'tune_radio_if_passed' }, function(){
+        machine.after_transition({ to: 'on', run: machine.object.tune_radio_if_passed }, function(){
           Y.Assert.areEqual('radio 1', arguments[0]);
         });
         

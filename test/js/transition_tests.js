@@ -20,10 +20,10 @@ jsStateMachineTests.TransitionTests = function(Y) {
       
       new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
         machine.event('start', {}, function(event){
-          event.transition({ from: 'parked', to: 'idling', unless: 'battery_flat' });
+          event.transition({ from: 'parked', to: 'idling', unless: event.machine.object.battery_flat });
         });
         machine.event('gear_up', {}, function(event){
-          event.transition({ from: 'idling', to: 'first_gear', when: 'car_in_working_order' });
+          event.transition({ from: 'idling', to: 'first_gear', when: event.machine.object.car_in_working_order });
         });
       });
       Y.Assert.isFalse(this.car.start());
@@ -34,6 +34,22 @@ jsStateMachineTests.TransitionTests = function(Y) {
       Y.Assert.areEqual('first_gear', this.car.state);
       Y.Assert.isTrue(this.car.jsmocha.verify(), this.car.jsmocha.report());
     },
+    testConditionCallbacksRecieveParameters : function () {
+		  new Mock(this.car);
+      this.car.expects('battery_flat').twice().passing(1,2,3,4).returns(false);
+      this.car.expects('car_in_working_order').twice().passing(1,2,3,4).returns(true);
+      
+      new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
+        machine.event('start', {}, function(event){
+          event.transition({  from: 'parked',
+                              to: 'idling',
+                              unless: event.machine.object.battery_flat,
+                              when: event.machine.object.car_in_working_order });
+        });
+      });
+      Y.Assert.isTrue(this.car.start(1,2,3,4));
+      Y.Assert.isTrue(this.car.jsmocha.verify(), this.car.jsmocha.report());
+    },
     testCanSetComplexConditionalTransitions : function () {
 		  new Mock(this.car);
       this.car.expects('battery_flat').times(3).returns(true, false, false);
@@ -41,7 +57,10 @@ jsStateMachineTests.TransitionTests = function(Y) {
       
       new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
         machine.event('start', {}, function(event){
-          event.transition({ from: 'parked', to: 'idling', unless: 'battery_flat', when: 'car_in_working_order' });
+          event.transition({  from: 'parked',
+                              to: 'idling',
+                              unless: event.machine.object.battery_flat,
+                              when: event.machine.object.car_in_working_order });
         });
       });
       Y.Assert.isFalse(this.car.start());
@@ -55,8 +74,8 @@ jsStateMachineTests.TransitionTests = function(Y) {
       this.car.expects('open_close_door').twice();
       new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
         
-        machine.before_transition({ on: 'get_out', run: 'open_close_door' });
-        machine.before_transition({ on: 'get_in', run: 'open_close_door' });
+        machine.before_transition({ on: 'get_out', run: machine.object.open_close_door });
+        machine.before_transition({ on: 'get_in', run: machine.object.open_close_door });
         
         machine.event('get_out', {}, function(event){
           event.transition({ from: 'parked', to: 'parked' });
