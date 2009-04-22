@@ -225,6 +225,37 @@ jsStateMachineTests.CallbackTests = function(Y) {
       delete callback_checker;
     },
 	}));
+	
+	testSuite.add(new Y.Test.Case({
+		
+		name: "passed parameters",
+		
+		setUp : function () {
+		  this.car = {};
+		},
+		
+		tearDown : function () {
+		  delete this.car;
+		},
+		
+    testCanPassParametersToCallback : function () {
+      new Mock(this.car);
+      this.car.expects('tune_radio_if_passed').passing('radio 1');
+      
+      new SM.StateMachine('radio_state', this.car, { initial: 'off' }, function(machine){
+        
+        machine.after_transition({ to: 'on', run: 'tune_radio_if_passed' }, function(){
+          Y.Assert.areEqual('radio 1', arguments[0]);
+        });
+        
+        machine.event('turn_on_radio', {}, function(event){
+          event.transition({ from: 'off', to: 'on' });
+        });
+      });
+      this.car.turn_on_radio('radio 1');
+      Y.Assert.isTrue(this.car.jsmocha.verify(), this.car.jsmocha.report());
+    }
+	}));
 
 	return testSuite;
 };
