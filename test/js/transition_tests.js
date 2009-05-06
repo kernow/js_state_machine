@@ -34,6 +34,59 @@ jsStateMachineTests.TransitionTests = function(Y) {
       Y.Assert.areEqual('first_gear', this.car.state);
       Y.Assert.isTrue(this.car.jsmocha.verify(), this.car.jsmocha.report());
     },
+    testAnyTransition : function () {
+      new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
+        machine.event('crash', {}, function(event){
+          event.transition({ from: 'any', to: 'crashed' });
+        });
+        machine.event('start', {}, function(event){
+          event.transition({ from: 'parked', to: 'idling' });
+        });
+        machine.event('repair', {}, function(event){
+          event.transition({ from: 'crashed', to: 'parked' });
+        });
+      });
+      Y.Assert.areEqual('parked', this.car.state);
+      Y.Assert.isTrue(this.car.crash());
+      Y.Assert.areEqual('crashed', this.car.state);
+      Y.Assert.isTrue(this.car.repair());
+      Y.Assert.areEqual('parked', this.car.state);
+      Y.Assert.isTrue(this.car.start());
+      Y.Assert.areEqual('idling', this.car.state);
+      Y.Assert.isTrue(this.car.crash());
+      Y.Assert.areEqual('crashed', this.car.state);
+    },
+    testExceptTransitions : function () {
+      new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
+        machine.event('crash', {}, function(event){
+          event.transition({ from: 'any', to: 'crashed', except: 'parked_in_garage' });
+        });
+        machine.event('start', {}, function(event){
+          event.transition({ from: 'parked', to: 'idling' });
+        });
+        machine.event('repair', {}, function(event){
+          event.transition({ from: 'crashed', to: 'parked' });
+        });
+        machine.event('park_in_garage', {}, function(event){
+          event.transition({ from: 'any', to: 'parked_in_garage' });
+        });
+      });
+      Y.Assert.areEqual('parked', this.car.state);
+      Y.Assert.isTrue(this.car.crash());
+      Y.Assert.areEqual('crashed', this.car.state);
+      Y.Assert.isTrue(this.car.repair());
+      Y.Assert.areEqual('parked', this.car.state);
+      Y.Assert.isTrue(this.car.start());
+      Y.Assert.areEqual('idling', this.car.state);
+      Y.Assert.isTrue(this.car.crash());
+      Y.Assert.areEqual('crashed', this.car.state);
+      Y.Assert.isTrue(this.car.repair());
+      Y.Assert.areEqual('parked', this.car.state);
+      Y.Assert.isTrue(this.car.park_in_garage());
+      Y.Assert.areEqual('parked_in_garage', this.car.state);
+      Y.Assert.isFalse(this.car.crash());
+      Y.Assert.areEqual('parked_in_garage', this.car.state);
+    },
     testConditionCallbacksRecieveParameters : function () {
 		  new Mock(this.car);
       this.car.expects('battery_flat').twice().passing(1,2,3,4).returns(false);
