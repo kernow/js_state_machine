@@ -15,7 +15,7 @@ jsStateMachineTests.EventTests = function(Y) {
 		},
 		
     testCanCheckIfEventCanBeFired : function () {
-      new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
+      new StateMachine('state', this.car, { initial: 'parked' }, function(machine){
         machine.event('start', {}, function(event){
           event.transition({ from: 'parked', to: 'idling' });
         });
@@ -28,7 +28,7 @@ jsStateMachineTests.EventTests = function(Y) {
     },
     
     testCanFireAndEvent : function () {
-      new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
+      new StateMachine('state', this.car, { initial: 'parked' }, function(machine){
         machine.event('start', {}, function(event){
           event.transition({ from: 'parked', to: 'idling' });
         });
@@ -42,7 +42,7 @@ jsStateMachineTests.EventTests = function(Y) {
       Y.Assert.isTrue(this.car.can_stop());
     },
     testCanSupportMultipleFromStatesAsArray : function () {
-      new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
+      new StateMachine('state', this.car, { initial: 'parked' }, function(machine){
         machine.event('start', {}, function(event){
           event.transition({ from: 'parked', to: 'idling' });
         });

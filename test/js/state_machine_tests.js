@@ -27,23 +27,23 @@ jsStateMachineTests.StateMachineTests = function(Y) {
 		},
 		
 		testShouldSetTheInitialStateAsBlank : function () {
-		  new SM.StateMachine('state', this.car);
+		  new StateMachine('state', this.car);
 			Y.Assert.areEqual('', this.car.state);
 		},
 		testShouldSetTheInitialState : function () {
-			new SM.StateMachine('state', this.car, { initial: 'parked' });
+			new StateMachine('state', this.car, { initial: 'parked' });
 			Y.Assert.areEqual('parked', this.car.state);
 		},
 		testShouldAddNewEventMethods : function () {
-		  new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
+		  new StateMachine('state', this.car, { initial: 'parked' }, function(machine){
 		    machine.event('start');
 		  });
 		  Y.Assert.isFunction(this.car.start);
 		  Y.Assert.isFunction(this.car.can_start);
 		},
 		testCanGetListOfEvents : function () {
-		  new SM.StateMachine('state', this.car, { initial: 'parked' });
-		  new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
+		  new StateMachine('state', this.car, { initial: 'parked' });
+		  new StateMachine('state', this.car, { initial: 'parked' }, function(machine){
 		    machine.event('start');
 		    machine.event('gear_up');
 		    machine.event('gear_down');
@@ -53,7 +53,7 @@ jsStateMachineTests.StateMachineTests = function(Y) {
 		  Y.Assert.isTrue(contains(this.car.state_events, 'gear_down'));
 		},
 		testCanGetListOfStates : function () {
-		  new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
+		  new StateMachine('state', this.car, { initial: 'parked' }, function(machine){
 		    machine.event('start', {}, function(event){
 		      event.transition({from: 'parked', to: 'idling'});
 		    });
@@ -69,7 +69,7 @@ jsStateMachineTests.StateMachineTests = function(Y) {
 		  Y.Assert.isTrue(contains(this.car.state_states, 'first_gear'));
 		},
 		testCanGetListOfStatesUsingFromStatesAsArray : function () {
-      new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
+      new StateMachine('state', this.car, { initial: 'parked' }, function(machine){
         machine.event('start', {}, function(event){
           event.transition({ from: 'parked', to: 'idling' });
         });
@@ -103,23 +103,23 @@ jsStateMachineTests.StateMachineTests = function(Y) {
 		},
 		
 		testShouldSetTheInitialStateAsBlank : function () {
-		  new SM.StateMachine('state', this.car);
-		  new SM.StateMachine('alarm_state', this.car);
+		  new StateMachine('state', this.car);
+		  new StateMachine('alarm_state', this.car);
 			Y.Assert.areEqual('', this.car.state);
 			Y.Assert.areEqual('', this.car.alarm_state);
 		},
     testShouldSetTheInitialState : function () {
-      new SM.StateMachine('state', this.car, { initial: 'parked' });
-      new SM.StateMachine('alarm_state', this.car, { initial: 'active' });
+      new StateMachine('state', this.car, { initial: 'parked' });
+      new StateMachine('alarm_state', this.car, { initial: 'active' });
       Y.Assert.areEqual('parked', this.car.state);
       Y.Assert.areEqual('active', this.car.alarm_state);
     },
     testShouldAddNewEventMethods : function () {
-      new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
+      new StateMachine('state', this.car, { initial: 'parked' }, function(machine){
         machine.event('start');
       });
       
-      new SM.StateMachine('alarm_state', this.car, { initial: 'active' }, function(machine){
+      new StateMachine('alarm_state', this.car, { initial: 'active' }, function(machine){
         machine.event('disable');
       });
       Y.Assert.isFunction(this.car.start);
@@ -128,12 +128,12 @@ jsStateMachineTests.StateMachineTests = function(Y) {
       Y.Assert.isFunction(this.car.can_disable);
     },
     testCanGetListOfEvents : function () {
-      new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
+      new StateMachine('state', this.car, { initial: 'parked' }, function(machine){
         machine.event('start');
         machine.event('gear_up');
         machine.event('gear_down');
       });
-      new SM.StateMachine('alarm_state', this.car, { initial: 'parked' }, function(machine){
+      new StateMachine('alarm_state', this.car, { initial: 'parked' }, function(machine){
         machine.event('enable');
         machine.event('disable');
         machine.event('alarm');

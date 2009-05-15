@@ -18,7 +18,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
       new Mock(this.car);
       this.car.expects('turn_on_radio');
       
-      new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
+      new StateMachine('state', this.car, { initial: 'parked' }, function(machine){
         
         machine.before_transition({ to: 'idling', run: machine.object.turn_on_radio });
         
@@ -33,7 +33,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
       new Mock(this.car);
       this.car.expects('check_mirror');
       
-      new SM.StateMachine('state', this.car, { initial: 'idling' }, function(machine){
+      new StateMachine('state', this.car, { initial: 'idling' }, function(machine){
         
         machine.before_transition({ from: 'idling', run: machine.object.check_mirror });
         
@@ -48,7 +48,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
       new Mock(this.car);
       this.car.expects('check_mirror');
       
-      new SM.StateMachine('state', this.car, { initial: 'idling' }, function(machine){
+      new StateMachine('state', this.car, { initial: 'idling' }, function(machine){
         
         machine.before_transition({ on: 'gear_up', run: machine.object.check_mirror });
         
@@ -63,7 +63,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
       new Mock(this.car);
       this.car.expects('open_sunroof');
       
-      new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
+      new StateMachine('state', this.car, { initial: 'parked' }, function(machine){
         
         machine.after_transition({ to: 'idling', run: machine.object.open_sunroof });
         
@@ -78,7 +78,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
       new Mock(this.car);
       this.car.expects('light_cigarette');
       
-      new SM.StateMachine('state', this.car, { initial: 'idling' }, function(machine){
+      new StateMachine('state', this.car, { initial: 'idling' }, function(machine){
         
         machine.before_transition({ from: 'idling', run: machine.object.light_cigarette });
         
@@ -93,7 +93,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
       new Mock(this.car);
       this.car.expects('light_cigarette');
       
-      new SM.StateMachine('state', this.car, { initial: 'idling' }, function(machine){
+      new StateMachine('state', this.car, { initial: 'idling' }, function(machine){
         
         machine.before_transition({ on: 'gear_up', run: machine.object.light_cigarette });
         
@@ -109,7 +109,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
       this.car.expects('check_mirror');
       this.car.expects('light_cigarette').never();
       
-      new SM.StateMachine('state', this.car, { initial: 'idling' }, function(machine){
+      new StateMachine('state', this.car, { initial: 'idling' }, function(machine){
         
         machine.before_transition({ from: 'idling', to: 'first_gear', run: machine.object.check_mirror });
         machine.before_transition({ from: 'first_gear', to: 'second_gear', run: machine.object.light_cigarette });
@@ -130,7 +130,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
       this.car.expects('turn_on_radio');
       this.car.expects('open_sunroof');
       
-      new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
+      new StateMachine('state', this.car, { initial: 'parked' }, function(machine){
         
         machine.before_transition({to: 'idling', run: machine.object.turn_on_radio });
         machine.after_transition({to: 'idling', run: machine.object.open_sunroof });
@@ -149,7 +149,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
       this.car.expects('open_sunroof');
       this.car.expects('close_sunroof').never();
       
-      new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
+      new StateMachine('state', this.car, { initial: 'parked' }, function(machine){
         
         machine.before_transition({to: 'idling', run: machine.object.turn_on_radio });
         machine.before_transition({to: 'parked', run: machine.object.turn_off_radio });
@@ -174,7 +174,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
       this.car.expects('open_sunroof');
       this.car.expects('close_sunroof');
       
-      new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
+      new StateMachine('state', this.car, { initial: 'parked' }, function(machine){
         
         machine.before_transition({to: 'idling', run: machine.object.turn_on_radio });
         machine.before_transition({to: 'parked', run: machine.object.turn_off_radio });
@@ -201,7 +201,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
       new Mock(this.car);
       this.car.expects('close_sunroof');
       
-      new SM.StateMachine('state', this.car, { initial: 'parked' }, function(machine){
+      new StateMachine('state', this.car, { initial: 'parked' }, function(machine){
         
         machine.before_transition({to: 'idling'}, function(){
           callback_checker.turn_on_radio();
@@ -242,7 +242,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
       new Mock(this.car);
       this.car.expects('tune_radio_if_passed').passing('radio 1');
       
-      new SM.StateMachine('radio_state', this.car, { initial: 'off' }, function(machine){
+      new StateMachine('radio_state', this.car, { initial: 'off' }, function(machine){
         
         machine.after_transition({ to: 'on', run: machine.object.tune_radio_if_passed }, function(){
           Y.Assert.areEqual('radio 1', arguments[0]);
