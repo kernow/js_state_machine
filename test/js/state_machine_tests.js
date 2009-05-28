@@ -54,13 +54,13 @@ jsStateMachineTests.StateMachineTests = function(Y) {
 		},
 		testCanGetListOfStates : function () {
 		  new StateMachine('state', this.car, { initial: 'parked' }, function(machine){
-		    machine.event('start', {}, function(event){
+		    machine.event('start', function(event){
 		      event.transition({from: 'parked', to: 'idling'});
 		    });
-		    machine.event('gear_up', {}, function(event){
+		    machine.event('gear_up', function(event){
 		      event.transition({from: 'idling', to: 'first_gear'});
 		    });
-		    machine.event('gear_down', {}, function(event){
+		    machine.event('gear_down', function(event){
 		      event.transition({from: 'first_gear', to: 'idling'});
 		    });
 		  });
@@ -70,13 +70,13 @@ jsStateMachineTests.StateMachineTests = function(Y) {
 		},
 		testCanGetListOfStatesUsingFromStatesAsArray : function () {
       new StateMachine('state', this.car, { initial: 'parked' }, function(machine){
-        machine.event('start', {}, function(event){
+        machine.event('start', function(event){
           event.transition({ from: 'parked', to: 'idling' });
         });
-        machine.event('stop', {}, function(event){
+        machine.event('stop', function(event){
           event.transition({ from: ['idling', 'first_gear', 'second_gear', 'third_gear'], to: 'parked' });
         });
-        machine.event('gear_up', {}, function(event){
+        machine.event('gear_up', function(event){
           event.transition({ from: 'idling', to: 'first_gear' });
           event.transition({ from: 'first_gear', to: 'second_gear' });
           event.transition({ from: 'second_gear', to: 'third_gear' });

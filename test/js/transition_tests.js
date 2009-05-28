@@ -19,10 +19,10 @@ jsStateMachineTests.TransitionTests = function(Y) {
       this.car.expects('car_in_working_order').times(3).returns(false, true);
       
       new StateMachine('state', this.car, { initial: 'parked' }, function(machine){
-        machine.event('start', {}, function(event){
+        machine.event('start', function(event){
           event.transition({ from: 'parked', to: 'idling', unless: event.machine.object.battery_flat });
         });
-        machine.event('gear_up', {}, function(event){
+        machine.event('gear_up', function(event){
           event.transition({ from: 'idling', to: 'first_gear', when: event.machine.object.car_in_working_order });
         });
       });
@@ -36,13 +36,13 @@ jsStateMachineTests.TransitionTests = function(Y) {
     },
     testAnyTransition : function () {
       new StateMachine('state', this.car, { initial: 'parked' }, function(machine){
-        machine.event('crash', {}, function(event){
+        machine.event('crash', function(event){
           event.transition({ from: 'any', to: 'crashed' });
         });
-        machine.event('start', {}, function(event){
+        machine.event('start', function(event){
           event.transition({ from: 'parked', to: 'idling' });
         });
-        machine.event('repair', {}, function(event){
+        machine.event('repair', function(event){
           event.transition({ from: 'crashed', to: 'parked' });
         });
       });
@@ -58,16 +58,16 @@ jsStateMachineTests.TransitionTests = function(Y) {
     },
     testExceptTransitions : function () {
       new StateMachine('state', this.car, { initial: 'parked' }, function(machine){
-        machine.event('crash', {}, function(event){
+        machine.event('crash', function(event){
           event.transition({ from: 'any', to: 'crashed', except: 'parked_in_garage' });
         });
-        machine.event('start', {}, function(event){
+        machine.event('start', function(event){
           event.transition({ from: 'parked', to: 'idling' });
         });
-        machine.event('repair', {}, function(event){
+        machine.event('repair', function(event){
           event.transition({ from: 'crashed', to: 'parked' });
         });
-        machine.event('park_in_garage', {}, function(event){
+        machine.event('park_in_garage', function(event){
           event.transition({ from: 'any', to: 'parked_in_garage' });
         });
       });
@@ -93,7 +93,7 @@ jsStateMachineTests.TransitionTests = function(Y) {
       this.car.expects('car_in_working_order').twice().passing(1,2,3,4).returns(true);
       
       new StateMachine('state', this.car, { initial: 'parked' }, function(machine){
-        machine.event('start', {}, function(event){
+        machine.event('start', function(event){
           event.transition({  from: 'parked',
                               to: 'idling',
                               unless: event.machine.object.battery_flat,
@@ -109,7 +109,7 @@ jsStateMachineTests.TransitionTests = function(Y) {
       this.car.expects('car_in_working_order').times(4).returns(true, false, true);
       
       new StateMachine('state', this.car, { initial: 'parked' }, function(machine){
-        machine.event('start', {}, function(event){
+        machine.event('start', function(event){
           event.transition({  from: 'parked',
                               to: 'idling',
                               unless: event.machine.object.battery_flat,
@@ -130,16 +130,16 @@ jsStateMachineTests.TransitionTests = function(Y) {
         machine.before_transition({ on: 'get_out', run: machine.object.open_close_door });
         machine.before_transition({ on: 'get_in', run: machine.object.open_close_door });
         
-        machine.event('get_out', {}, function(event){
+        machine.event('get_out', function(event){
           event.transition({ from: 'parked', to: 'parked' });
         });
-        machine.event('get_in', {}, function(event){
+        machine.event('get_in', function(event){
           event.transition({ from: 'parked', to: 'parked'});
         });
-        machine.event('start', {}, function(event){
+        machine.event('start', function(event){
           event.transition({ from: 'parked', to: 'idling' });
         });
-        machine.event('stop', {}, function(event){
+        machine.event('stop', function(event){
           event.transition({ from: 'idling', to: 'parked' });
         });
       });

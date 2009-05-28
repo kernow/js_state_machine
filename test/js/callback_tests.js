@@ -22,7 +22,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
         
         machine.before_transition({ to: 'idling', run: machine.object.turn_on_radio });
         
-        machine.event('start', {}, function(event){
+        machine.event('start', function(event){
           event.transition({ from: 'parked', to: 'idling' });
         });
       });
@@ -37,7 +37,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
         
         machine.before_transition({ from: 'idling', run: machine.object.check_mirror });
         
-        machine.event('gear_up', {}, function(event){
+        machine.event('gear_up', function(event){
           event.transition({ from: 'idling', to: 'first_gear' });
         });
       });
@@ -52,7 +52,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
         
         machine.before_transition({ on: 'gear_up', run: machine.object.check_mirror });
         
-        machine.event('gear_up', {}, function(event){
+        machine.event('gear_up', function(event){
           event.transition({ from: 'idling', to: 'first_gear' });
         });
       });
@@ -67,7 +67,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
         
         machine.after_transition({ to: 'idling', run: machine.object.open_sunroof });
         
-        machine.event('start', {}, function(event){
+        machine.event('start', function(event){
           event.transition({ from: 'parked', to: 'idling' });
         });
       });
@@ -82,7 +82,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
         
         machine.before_transition({ from: 'idling', run: machine.object.light_cigarette });
         
-        machine.event('gear_up', {}, function(event){
+        machine.event('gear_up', function(event){
           event.transition({ from: 'idling', to: 'first_gear' });
         });
       });
@@ -97,7 +97,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
         
         machine.before_transition({ on: 'gear_up', run: machine.object.light_cigarette });
         
-        machine.event('gear_up', {}, function(event){
+        machine.event('gear_up', function(event){
           event.transition({ from: 'idling', to: 'first_gear' });
         });
       });
@@ -114,10 +114,10 @@ jsStateMachineTests.CallbackTests = function(Y) {
         machine.before_transition({ from: 'idling', to: 'first_gear', run: machine.object.check_mirror });
         machine.before_transition({ from: 'first_gear', to: 'second_gear', run: machine.object.light_cigarette });
         
-        machine.event('gear_up', {}, function(event){
+        machine.event('gear_up', function(event){
           event.transition({ from: 'idling', to: 'first_gear' });
         });
-        machine.event('gear_up_2', {}, function(event){
+        machine.event('gear_up_2', function(event){
           event.transition({ from: 'first_gear', to: 'third_gear' });
         });
       });
@@ -135,7 +135,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
         machine.before_transition({to: 'idling', run: machine.object.turn_on_radio });
         machine.after_transition({to: 'idling', run: machine.object.open_sunroof });
         
-        machine.event('start', {}, function(event){
+        machine.event('start', function(event){
           event.transition({ from: 'parked', to: 'idling' });
         });
       });
@@ -157,10 +157,10 @@ jsStateMachineTests.CallbackTests = function(Y) {
         machine.after_transition({to: 'idling', run: machine.object.open_sunroof });
         machine.after_transition({to: 'parked', run: machine.object.close_sunroof });
         
-        machine.event('start', {}, function(event){
+        machine.event('start', function(event){
           event.transition({ from: 'parked', to: 'idling' });
         });
-        machine.event('stop', {}, function(event){
+        machine.event('stop', function(event){
           event.transition({ from: 'idling', to: 'parked' });
         });
       });
@@ -182,10 +182,10 @@ jsStateMachineTests.CallbackTests = function(Y) {
         machine.after_transition({to: 'idling', run: machine.object.open_sunroof });
         machine.after_transition({to: 'parked', run: machine.object.close_sunroof });
         
-        machine.event('start', {}, function(event){
+        machine.event('start', function(event){
           event.transition({ from: 'parked', to: 'idling' });
         });
-        machine.event('stop', {}, function(event){
+        machine.event('stop', function(event){
           event.transition({ from: 'idling', to: 'parked' });
         });
       });
@@ -210,11 +210,11 @@ jsStateMachineTests.CallbackTests = function(Y) {
           callback_checker.turn_off_radio();
         });
         
-        machine.event('start', {}, function(event){
+        machine.event('start', function(event){
           event.transition({ from: 'parked', to: 'idling' });
         });
         
-        machine.event('stop', {}, function(event){
+        machine.event('stop', function(event){
           event.transition({ from: 'idling', to: 'parked' });
         });
       });
@@ -248,7 +248,7 @@ jsStateMachineTests.CallbackTests = function(Y) {
           Y.Assert.areEqual('radio 1', arguments[0]);
         });
         
-        machine.event('turn_on_radio', {}, function(event){
+        machine.event('turn_on_radio', function(event){
           event.transition({ from: 'off', to: 'on' });
         });
       });
